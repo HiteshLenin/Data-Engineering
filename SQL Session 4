@@ -1,0 +1,82 @@
+select DISTINCT first_name
+from sakila.actor;
+
+select * from sakila.film where original_language_id is null;
+# count
+select count(*) from sakila.film;
+
+select DISTINCT title from sakila.film where original_language_id is null;
+
+# Count & Distinct Count
+
+select count(first_name) from sakila.actor;
+
+select count(distinct(first_name)) from sakila.actor;
+
+# LIMIT used for Optimization
+
+select first_name from sakila.actor LIMIT 50;
+
+# Filtering Data
+SELECT *
+FROM sakila.film
+WHERE rating = 'R'
+  AND length >= 120;
+  
+# Sorting Data
+
+Select * from sakila.film order by rental_rate desc; 
+
+# Not Operation
+
+select * from sakila.film
+where Not  rental_duration in (6,7,3)
+order by rental_rate asc;
+
+# And & OR Operation
+
+select * from sakila.film 
+where rental_duration = 6 and (rating ='G' or rating = 'PG')
+
+# LIKE
+
+select city from sakila.city where city like 'A%S';
+
+Select city from sakila.city where city like '_s_a_%'
+
+#NULL:
+
+select rental_id, inventory_id, customer_id, return_date
+from sakila.rental
+where return_date is Not NULL;
+
+select rental_id, inventory_id, customer_id, return_date
+from sakila.rental
+where return_date is NULL;
+
+#Between
+
+select rental_id, inventory_id, customer_id, return_date
+from sakila.rental
+where return_date between '2005-04-01' and '2005-12-31';
+
+#group by and having
+#to check duplicates
+
+select customer_id,  count(*) as count #**(*-Unique)**
+From sakila.rental
+Group BY customer_id #(if one item is in select, it has be in group by)
+Having count(*)<=30 #(Dont use Alias name here count)
+order by count desc;
+
+#Alias
+
+# order of execution in SQL
+
+#from(table)---> join--->where--->group by-- having--select--orderby--limit
+
+#(Group By followed by Having)
+select customer_id, sum(amount) as total_payment
+from sakila.payment
+group by customer_id
+having sum(amount) > 100 and customer_id;
