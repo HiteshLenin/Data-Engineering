@@ -1,6 +1,6 @@
 select DISTINCT first_name
 from sakila.actor;
-
+# WHERE
 select * from sakila.film where original_language_id is null;
 # count
 select count(*) from sakila.film;
