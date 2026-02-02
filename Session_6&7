@@ -1,0 +1,143 @@
+#sub queries 
+use sakila;
+
+SELECT customer_id, amount, payment_date
+FROM sakila.payment
+WHERE payment_date >= (
+    SELECT MAX(payment_date) - INTERVAL 1 day
+    FROM sakila.payment
+);
+
+SELECT first_name, last_name
+FROM sakila.customer
+
+WHERE address_id IN (
+    SELECT address_id
+    FROM sakila.customer
+     #WHERE customer_id = 1
+);
+
+select * from film_actor;
+
+SELECT actor_id, first_name, last_name
+FROM sakila.actor
+WHERE actor_id IN (
+    SELECT actor_id
+    FROM sakila.film_actor
+    GROUP BY actor_id
+    HAVING COUNT(film_id) > 10
+);
+
+SELECT actor_id,
+       first_name,
+       last_name,
+       (
+           SELECT COUNT(*)
+           FROM sakila.film_actor
+           WHERE film_actor.actor_id = actor.actor_id
+       ) AS film_count
+FROM sakila.actor;
+
+------------------------
+# Derived Tables
+
+SELECT a.actor_id, a.first_name, a.last_name, fa.film_count
+FROM sakila.actor a
+JOIN (
+    SELECT actor_id, COUNT(film_id) AS film_count
+    FROM sakila.film_actor
+    GROUP BY actor_id
+    HAVING COUNT(film_id) > 10
+) fa ON a.actor_id = fa.actor_id;
+
+SELECT payment_id, customer_id, amount, payment_date
+FROM sakila.payment p1
+WHERE amount > (
+    SELECT AVG(amount)
+    FROM sakila.payment p2
+    WHERE p2.customer_id = p1.customer_id
+);
+
+SELECT customer_id, amount
+FROM sakila.payment
+WHERE amount > (
+    SELECT AVG(amount)
+    FROM sakila.payment
+);
+
+select avg(amount)
+from sakila.payment;
+
+SELECT first_name, address_id
+FROM sakila.customer
+Where address_id In
+      ( (SELECT address_id FROM sakila.address WHERE district = 'California')
+);
+
+SELECT c.first_name, c.address_id
+FROM sakila.customer c
+JOIN sakila.address a
+  ON c.address_id = a.address_id
+WHERE a.district = 'California';
+
+SELECT title,
+  (SELECT COUNT(*)
+   FROM sakila.film_actor fa
+   WHERE fa.film_id = f.film_id) AS actor_count
+FROM sakila.film f;
+
+SELECT payment_id, customer_id, amount, payment_date
+FROM sakila.payment p1
+WHERE amount > (
+    SELECT AVG(amount)
+    FROM sakila.payment p2
+    WHERE p2.customer_id = p1.customer_id
+);
+
+# Cardinality relationship
+#One-to-One 
+# One-to-Many
+#Many-t-One
+#Many-to-Many
+
+# Joins
+
+# Inner Joins - Combines Only matching rows
+
+SELECT c.first_name, a.district
+FROM sakila.customer c
+INNER JOIN sakila.address a
+  ON c.address_id = a.address_id;
+
+# LEFT JOIN - Returns all rows from the left table, plus matching rows from the right table.
+
+SELECT c.first_name, a.district
+FROM sakila.customer c
+LEFT JOIN sakila.address a
+  ON c.address_id = a.address_id;
+  
+ # Right Join -
+ 
+  SELECT c.first_name, a.district
+FROM sakila.customer c
+RIGHT JOIN sakila.address a
+  ON c.address_id = a.address_id;
+  
+  # Full Outer Join (Union)---Returns all rows from both tables, matched or not.
+
+SELECT c.first_name, a.district
+FROM sakila.customer c
+LEFT JOIN sakila.address a
+  ON c.address_id = a.address_id
+
+UNION
+
+SELECT c.first_name, a.district
+FROM sakila.customer c
+RIGHT JOIN sakila.address a
+  ON c.address_id = a.address_id;
+  
+ # Cross Join -- 
+SELECT c.first_name, a.district
+FROM sakila.customer c
+CROSS JOIN sakila.address a;
