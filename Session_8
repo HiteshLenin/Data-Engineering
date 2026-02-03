@@ -1,0 +1,31 @@
+CTE : Common table expressions
+A CTE is a temporary named result set created using the WITH clause.
+It exists only for the duration of a single SQL query.
+•	Improves readability of complex queries
+•	Can be referenced multiple times within the same query
+•	Supports recursive queries.
+Anchor Member:
+•	The anchor member is the base query of a recursive CTE.
+It starts the recursion and produces the initial result set.
+•	Without the anchor member, recursion cannot begin.
+Recursive member:
+The recursive member is the part of a recursive CTE that references the CTE itself and is repeatedly executed to build on the results produced by the anchor member.
+It expands the result set step by step until no new rows are returned. 
+Temporary Table:
+A temporary table is a physical table created temporarily and stored in memory (or disk).
+It exists only for the current session.
+•	Automatically dropped when session ends
+•	Faster for intermediate processing
+•	Not visible to other sessions
+•	Reusing data across multiple queries
+View:
+A view is a virtual table created from a stored SQL query.
+It does not store data, only the query definition.
+•	Stored permanently in the database
+•	Data is fetched dynamically
+•	Improves security and abstraction
+•	Can simplify complex queries
+•	Stored in memory by default
+Data Abstraction: 
+Data abstraction means hiding complex database logic (tables, joins, calculations) and exposing only the required data to users in a simplified form.
+In MySQL, views are a primary mechanism to achieve data abstraction.
