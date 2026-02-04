@@ -1,0 +1,44 @@
+Stored Procedure?
+A stored procedure is a named block of SQL code saved inside the database. You can execute it whenever needed.
+A stored procedure lets the database behave like a program, not just a place to store data.
+•	Reusability: write once, call many times
+•	Security: users can be allowed to run a procedure without direct table access
+•	Maintainability: logic centralized in DB
+•	Executes multiple SQL statements together
+•	Can accept input values
+•	Can return output values
+•	Can contain logic (conditions, loops, variables)
+•	Runs on the database server, not on the client
+DELIMITER
+
+Procedures can accept inputs and return values via parameters.
+
+DELIMITER //
+...
+END;
+//
+
+DELIMITER ;
+
+Procedure header
+Procedure name
+Stored in schema
+IN parameter - read-only input into the procedure.
+
+
+1.	Parameters- IN, Out, INOUT
+
+2.Variable declarations
+DECLARE statements must appear near the top of the BEGIN...END block
+3.Control Flow-
+IF condition THEN
+   ...
+ELSE
+   ...
+END IF;
+4. Cursors (Row-by-row processing)
+DECLARE cur CURSOR FOR SELECT 
+5. Exception Handling:
+Used to prevent runtime failures
+6. Dynamic SQL
+In MySQL, Dynamic SQL is mainly used inside stored procedures when table names, column names, or conditions are not known in advance.
